@@ -1,0 +1,12 @@
+{
+  "name": "stablecoin-protocol",
+  "version": "1.0.0",
+  "description": "Algorithmic Stablecoin Protocol (DAI-Style)",
+  "scripts": {
+    "build": "cd contracts && forge build",
+    "test": "cd contracts && forge test",
+    "coverage": "cd contracts && forge coverage"
+  },
+  "author": "",
+  "license": "MIT"
+}

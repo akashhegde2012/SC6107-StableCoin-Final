@@ -1,0 +1,28 @@
+.ignore
+AGENTS.md
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── IDE / Editor ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Foundry ──
+contracts/cache/
+contracts/out/
+contracts/lib/forge-std/
+foundry.lock
+
+# ── Node / Frontend ──
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# ── Misc ──
+*.log
