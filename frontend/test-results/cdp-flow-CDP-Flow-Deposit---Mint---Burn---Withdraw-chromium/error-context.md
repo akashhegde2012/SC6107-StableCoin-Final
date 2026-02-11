@@ -1,0 +1,211 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: S
+          - generic [ref=e8]:
+            - generic [ref=e9]: SC Protocol
+            - generic [ref=e10]: COLLATERALIZED STABLECOIN
+        - navigation [ref=e11]:
+          - button "Dashboard" [ref=e12] [cursor=pointer]
+        - button "Connect Wallet" [ref=e15] [cursor=pointer]
+    - main [ref=e16]:
+      - generic [ref=e18]: ● Sepolia
+      - generic [ref=e19]:
+        - generic [ref=e21]:
+          - generic [ref=e24]: Account Information
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - heading "Wallet Balances" [level=3] [ref=e27]: Wallet Balances
+              - generic [ref=e29]:
+                - generic [ref=e30]:
+                  - generic [ref=e31]: ETH
+                  - generic [ref=e32]: "0"
+                - generic [ref=e33]:
+                  - generic [ref=e34]: WETH
+                  - generic [ref=e35]: "0"
+                - generic [ref=e36]:
+                  - generic [ref=e37]: WBTC
+                  - generic [ref=e38]: "0"
+                - generic [ref=e39]:
+                  - generic [ref=e40]: SC
+                  - generic [ref=e41]: "0"
+            - generic [ref=e42]:
+              - heading "Protocol Position" [level=3] [ref=e43]: Protocol Position
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - generic [ref=e47]: WETH Collateral
+                  - generic [ref=e48]: "0"
+                - generic [ref=e49]:
+                  - generic [ref=e50]: WBTC Collateral
+                  - generic [ref=e51]: "0"
+                - generic [ref=e53]:
+                  - generic [ref=e54]: SC Debt
+                  - generic [ref=e55]: "0"
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e58]: 💡
+            - generic [ref=e59]:
+              - generic [ref=e60]: How it works
+              - generic [ref=e61]:
+                - generic [ref=e62]:
+                  - generic [ref=e63]: "1"
+                  - generic [ref=e64]: Deposit WETH or WBTC as collateral
+                - generic [ref=e65]:
+                  - generic [ref=e66]: "2"
+                  - generic [ref=e67]: Mint SC up to 50% of your collateral value
+                - generic [ref=e68]:
+                  - generic [ref=e69]: "3"
+                  - generic [ref=e70]: Repay debt to reclaim your collateral
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - img [ref=e76]
+                  - text: Collateral Manager
+                - generic [ref=e79]:
+                  - button "Deposit" [ref=e80]
+                  - button "Withdraw" [ref=e81]
+              - generic [ref=e82]:
+                - generic [ref=e83]:
+                  - generic [ref=e84]: Select Asset
+                  - generic [ref=e85]:
+                    - generic [ref=e87] [cursor=pointer]:
+                      - generic [ref=e88]: W
+                      - generic [ref=e89]: WETH
+                    - generic [ref=e92] [cursor=pointer]:
+                      - generic [ref=e93]: W
+                      - generic [ref=e94]: WBTC
+                - generic [ref=e95]:
+                  - generic [ref=e96]:
+                    - generic [ref=e97]: Amount
+                    - generic [ref=e98]:
+                      - img [ref=e99]
+                      - generic [ref=e102]: "Wallet: 0"
+                  - generic [ref=e103]:
+                    - spinbutton [ref=e104]
+                    - generic: WETH
+                - button "Deposit WETH" [disabled]
+            - generic [ref=e105]:
+              - generic [ref=e107]:
+                - generic [ref=e108]:
+                  - img [ref=e110]
+                  - text: Debt Manager
+                - generic [ref=e114]: 1 SC = $1.00
+              - generic [ref=e115]:
+                - generic [ref=e116]:
+                  - generic [ref=e117]:
+                    - generic [ref=e118]: Your Debt
+                    - generic [ref=e119]: "0.00"
+                    - generic [ref=e120]: SC minted
+                  - generic [ref=e121]:
+                    - generic [ref=e122]: Health Factor
+                    - generic [ref=e123]: ∞
+                    - generic [ref=e124]: Safety Score
+                - generic [ref=e125]:
+                  - img [ref=e126]
+                  - generic [ref=e129]:
+                    - text: "Current stability fee:"
+                    - generic [ref=e130]: 2.00% APR
+                - generic [ref=e131]:
+                  - button "+ Mint SC" [ref=e132]
+                  - button "- Burn SC" [ref=e133]
+                - generic [ref=e134]:
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: Max Mintable
+                    - 'button "MAX: 0.0000" [ref=e137]'
+                  - generic [ref=e138]:
+                    - spinbutton [ref=e139]
+                    - generic [ref=e140]: SC
+                - button "Mint StableCoin" [disabled]
+              - generic [ref=e142]: Minting increases debt. Keep Health Factor > 1.5 for safety.
+          - generic [ref=e143]:
+            - heading "Protocol Mechanics" [level=3] [ref=e145]
+            - generic [ref=e147]:
+              - generic [ref=e148]:
+                - generic [ref=e149]:
+                  - generic [ref=e150]: 📈
+                  - generic [ref=e151]: Stability Fees
+                - paragraph [ref=e152]: 2.00% APR — dynamically adjusts based on SC peg. Increases when SC trades below $0.99, decreases above $1.01.
+              - generic [ref=e153]:
+                - generic [ref=e154]:
+                  - generic [ref=e155]: 🔨
+                  - generic [ref=e156]: Liquidations
+                - paragraph [ref=e157]: Positions below health factor 1.0 are eligible for liquidation via English auction. Liquidators receive 10% bonus collateral.
+              - generic [ref=e158]:
+                - generic [ref=e159]:
+                  - generic [ref=e160]: ⚖️
+                  - generic [ref=e161]: Price Stability Module
+                - paragraph [ref=e162]: PSM enables 1:1 swaps between collateral tokens and SC to maintain the $1.00 peg through arbitrage.
+              - generic [ref=e163]:
+                - generic [ref=e164]:
+                  - generic [ref=e165]: 🔮
+                  - generic [ref=e166]: Oracle Safety
+                - paragraph [ref=e167]: Hardened Chainlink oracles with 3-hour stale timeout, 30% circuit breaker, and 30-minute TWAP smoothing.
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - heading "Deployed Contracts" [level=3] [ref=e170]
+              - generic [ref=e172]: Sepolia 11155111
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - generic [ref=e175]: StableCoin (SC)
+                - generic [ref=e176]: 0xb4B1BF77...6dB54E
+              - generic [ref=e177]:
+                - generic [ref=e178]: StableCoinEngine
+                - generic [ref=e179]: 0xA7b5aFbc...e9F423
+              - generic [ref=e180]:
+                - generic [ref=e181]: WETH Token
+                - generic [ref=e182]: 0x4665313B...334479
+              - generic [ref=e183]:
+                - generic [ref=e184]: WBTC Token
+                - generic [ref=e185]: 0x45e4F73c...4d9fcB
+    - contentinfo [ref=e186]:
+      - generic [ref=e187]:
+        - generic [ref=e188]: SC Protocol — MakerDAO-style Collateralized Stablecoin
+        - generic [ref=e189]: Built with Foundry · Next.js · Viem · Tailwind CSS
+  - button "Open Next.js Dev Tools" [ref=e195] [cursor=pointer]:
+    - img [ref=e196]
+  - alert [ref=e199]
+  - dialog "Connect a Wallet" [ref=e200]:
+    - document [ref=e201]:
+      - generic [ref=e205]:
+        - generic [ref=e206]:
+          - heading "Connect a Wallet" [level=1] [ref=e209]
+          - generic [ref=e210]:
+            - generic [ref=e212]: Popular
+            - generic [ref=e213]:
+              - button "Rainbow" [ref=e215] [cursor=pointer]:
+                - generic [ref=e217]:
+                  - img [ref=e218]:
+                    - img [ref=e219]
+                  - generic [ref=e222]: Rainbow
+              - button "Base Account" [ref=e224] [cursor=pointer]:
+                - generic [ref=e226]:
+                  - img [ref=e227]:
+                    - img [ref=e228]
+                  - generic [ref=e231]: Base Account
+              - button "MetaMask" [disabled] [ref=e233] [cursor=pointer]:
+                - generic [ref=e235]:
+                  - img [ref=e236]:
+                    - img [ref=e237]
+                  - generic [ref=e239]: MetaMask
+              - button "WalletConnect" [ref=e241] [cursor=pointer]:
+                - generic [ref=e243]:
+                  - img [ref=e244]:
+                    - img [ref=e245]
+                  - generic [ref=e248]: WalletConnect
+        - generic [ref=e250]:
+          - button "Close" [ref=e252] [cursor=pointer]:
+            - img [ref=e253]
+          - generic [ref=e259]:
+            - img [ref=e261]:
+              - img [ref=e262]
+            - generic [ref=e263]:
+              - generic [ref=e264]: Opening MetaMask...
+              - generic [ref=e266]: Confirm connection in the extension
+              - img "Loading" [ref=e269]
+```
