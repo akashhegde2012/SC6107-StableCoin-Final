@@ -11,7 +11,7 @@ import {
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { sepolia } from 'viem/chains';
-import { CONTRACTS, ERC20_ABI, STABLE_COIN_ENGINE_ABI } from '../contracts';
+import { CONTRACTS, ERC20_ABI, STABLE_COIN_ENGINE_ABI, LIQUIDATION_AUCTION_ABI } from '../contracts';
 
 // Human-readable messages for each custom error name
 const ERROR_MESSAGES: Record<string, (args?: readonly unknown[]) => string> = {
@@ -115,7 +115,9 @@ function useApproveAndExecute() {
       });
       return withGasBuffer(estimated);
     } catch {
-      return undefined;
+      // Estimation failed (e.g. simulation reverts). Use the cap so viem never
+      // submits an unbounded gas value that exceeds the network block gas limit.
+      return GAS_CAP;
     }
   };
 
@@ -298,15 +300,14 @@ export function useWithdrawCollateral() {
   return { execute, isPending, error, step };
 }
 
-export function useLiquidate() {
+/**
+ * Phase 1 — Start a liquidation auction on an underwater position.
+ * liquidate() does NOT take SC from the caller; it seizes the user's collateral
+ * and hands it to the LiquidationAuction contract to run an English auction.
+ */
+export function useStartLiquidation() {
   const { execute: executeBase, isPending, error, step } = useApproveAndExecute();
 
-  /**
-   * Liquidate an undercollateralised position.
-   * @param collateralToken - The collateral token address to seize (WETH or WBTC)
-   * @param userToLiquidate - The borrower's address
-   * @param debtToCover     - Amount of SC debt to repay (in ether units, e.g. "100")
-   */
   const execute = async (
     collateralToken: string,
     userToLiquidate: string,
@@ -314,14 +315,55 @@ export function useLiquidate() {
   ) => {
     const debtWei = parseEther(debtToCover);
     return executeBase({
-      // Liquidator must spend their own SC to cover the debt
-      tokenAddress: CONTRACTS.STABLE_COIN,
-      spenderAddress: CONTRACTS.STABLE_COIN_ENGINE,
-      amount: debtWei,
+      // No token approval — liquidate() does not pull SC from the caller
       contractAddress: CONTRACTS.STABLE_COIN_ENGINE,
       abi: STABLE_COIN_ENGINE_ABI,
       functionName: 'liquidate',
       args: [collateralToken as Address, userToLiquidate as Address, debtWei],
+    });
+  };
+
+  return { execute, isPending, error, step };
+}
+
+/**
+ * Phase 2 — Place a bid on an active liquidation auction.
+ * Approves SC to the LiquidationAuction contract, then calls placeBid().
+ * The previous highest bidder is automatically refunded by the contract.
+ */
+export function usePlaceBid() {
+  const { execute: executeBase, isPending, error, step } = useApproveAndExecute();
+
+  const execute = async (auctionId: bigint, bidAmount: string) => {
+    const bidWei = parseEther(bidAmount);
+    return executeBase({
+      tokenAddress: CONTRACTS.STABLE_COIN,
+      spenderAddress: CONTRACTS.LIQUIDATION_AUCTION,
+      amount: bidWei,
+      contractAddress: CONTRACTS.LIQUIDATION_AUCTION,
+      abi: LIQUIDATION_AUCTION_ABI,
+      functionName: 'placeBid',
+      args: [auctionId, bidWei],
+    });
+  };
+
+  return { execute, isPending, error, step };
+}
+
+/**
+ * Phase 3 — Finalize a completed auction.
+ * Can be called by anyone once the auction has expired or the highest bid
+ * equals the target debt. No SC approval required.
+ */
+export function useFinalizeAuction() {
+  const { execute: executeBase, isPending, error, step } = useApproveAndExecute();
+
+  const execute = async (auctionId: bigint) => {
+    return executeBase({
+      contractAddress: CONTRACTS.LIQUIDATION_AUCTION,
+      abi: LIQUIDATION_AUCTION_ABI,
+      functionName: 'finalizeAuction',
+      args: [auctionId],
     });
   };
 
