@@ -55,7 +55,8 @@ export function useLiquidations() {
       // Start from the known deployment block to skip millions of empty blocks.
       const CHUNK = 49_999n;
       const latestBlock = await publicClient.getBlockNumber();
-      const allLogs: Awaited<ReturnType<typeof publicClient.getLogs>> = [];
+      type DepositLog = { args: { user?: Address; tokenCollateralAddress?: Address; amountCollateral?: bigint } };
+      const allLogs: DepositLog[] = [];
 
       for (let from = ENGINE_DEPLOY_BLOCK; from <= latestBlock; from += CHUNK) {
         const to = from + CHUNK - 1n < latestBlock ? from + CHUNK - 1n : latestBlock;
@@ -70,7 +71,7 @@ export function useLiquidations() {
       const logs = allLogs;
 
       const uniqueUsers = [
-        ...new Set(logs.map((l) => l.args.user as Address)),
+        ...new Set(logs.flatMap((l) => l.args.user ? [l.args.user] : [])),
       ];
 
       if (uniqueUsers.length === 0) {
